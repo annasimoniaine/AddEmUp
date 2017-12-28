@@ -38,4 +38,6 @@
     <string name="signed_in_cancelled">Signing in failed</string>
     <string name="account">My account</string>
     <string name="sign_out">Sign out</string>
+    <string name="edit">Edit</string>
+    <string name="edit_account">Edit account</string>
 </resources>
