@@ -36,10 +36,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
+//            IdpResponse response = IdpResponse.fromResultIntent(data);
 
-            if (resultCode == ResultCodes.OK) {
-//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (resultCode == RESULT_OK) {
                 startMenu();
             } else {
                 // signin failed!
