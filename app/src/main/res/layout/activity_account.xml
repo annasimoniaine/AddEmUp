@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
+
     tools:context="com.simonebakker.simone.addemup.activities.AccountActivity">
 
     <android.support.v7.widget.Toolbar
@@ -88,5 +89,38 @@
             android:textAppearance="@android:style/TextAppearance.Material.Medium"
             tools:text="Email of user" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/statistics" />
+
+    <TextView
+        android:id="@+id/highest_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:layout_marginStart="8dp"
+        tools:text="Highest rank: "/>
+
+    <TextView
+        android:id="@+id/highest_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:layout_marginStart="8dp"
+        tools:text="Highest score: "/>
+
+    <TextView
+        android:id="@+id/highest_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:layout_marginStart="8dp"
+        tools:text="Highest level reached: "/>
 
 </LinearLayout>

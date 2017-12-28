@@ -40,4 +40,8 @@
     <string name="sign_out">Sign out</string>
     <string name="edit">Edit</string>
     <string name="edit_account">Edit account</string>
+    <string name="statistics">Statistics</string>
+    <string name="highest_ranking">Highest ranking</string>
+    <string name="highest_score">Highest score</string>
+    <string name="higest_level">Highest level reached</string>
 </resources>

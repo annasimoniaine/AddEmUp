@@ -113,7 +113,12 @@ public class AccountActivity extends AppCompatActivity {
         TextView emailView = findViewById(R.id.email_view);
         emailView.setText(mEmail);
 
+        fillStats();
         bindImage();
+    }
+
+    private void fillStats() {
+        // TODO: fill statistics using firebase calls
     }
 
     private void bindImage() {
@@ -124,6 +129,8 @@ public class AccountActivity extends AppCompatActivity {
                 .centerInside()
                 .into(imageView);
         imageView.setImageURI(mPhotoUrl);
+
+        // TODO: make clickable and use camera/files phone to add new image
     }
 
     private void setOnClicks() {
