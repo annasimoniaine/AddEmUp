@@ -2,10 +2,12 @@ package com.simonebakker.simone.addemup.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,7 +29,6 @@ public class AccountActivity extends AppCompatActivity {
 
         setToolbar();
         getUser();
-//        setVariables();
         fillViews();
     }
 
@@ -58,17 +59,23 @@ public class AccountActivity extends AppCompatActivity {
             mEmail = user.getEmail();
             mPhotoUrl = user.getPhotoUrl();
         } else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+            backToLogin();
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
         }
     }
 
-    private void setVariables() {
+    private void fillViews() {
+        TextView nameView = findViewById(R.id.name_view);
+        nameView.setText(mName);
 
+        TextView emailView = findViewById(R.id.email_view);
+        emailView.setText(mEmail);
+        bindImage();
     }
 
-    private void fillViews() {
+    private void bindImage() {
         ImageView imageView = findViewById(R.id.user_img);
         Picasso.with(this)
                 .load(mPhotoUrl).placeholder(R.drawable.default_avatar).error(R.drawable.default_avatar)
@@ -76,8 +83,33 @@ public class AccountActivity extends AppCompatActivity {
                 .centerInside()
                 .into(imageView);
         imageView.setImageURI(mPhotoUrl);
+    }
 
-        TextView nameView = findViewById(R.id.name_view);
-        nameView.setText(mName);
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out_menu:
+                FirebaseAuth.getInstance().signOut();
+//                Toast.makeText(this, getString(R.string.logged_out_success), Toast.LENGTH_SHORT).show();
+                backToLogin();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void backToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
