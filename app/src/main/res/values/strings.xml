@@ -35,4 +35,6 @@
     <string name="claim_score">Claim your score by adding your name</string>
     <string name="save">Save</string>
     <string name="no_high_score">This is not a new high score</string>
+    <string name="signed_in_cancelled">Signing in failed</string>
+    <string name="account">Account</string>
 </resources>

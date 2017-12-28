@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "870490477735",
+    "firebase_url": "https://addemup-bcfee.firebaseio.com",
+    "project_id": "addemup-bcfee",
+    "storage_bucket": "addemup-bcfee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870490477735:android:a0e9081e00b6e0c5",
+        "android_client_info": {
+          "package_name": "com.simonebakker.simone.addemup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870490477735-6gu8ip0sn5lo4sjds52rnqqg5js0qj48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simonebakker.simone.addemup",
+            "certificate_hash": "7135e1cedc940242579f12a485469ad8b1d74bc5"
+          }
+        },
+        {
+          "client_id": "870490477735-gmguj21pn0178no22ureo715ollvlli6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simonebakker.simone.addemup",
+            "certificate_hash": "7135e1cedc940242579f12a485469ad8b2d74bc5"
+          }
+        },
+        {
+          "client_id": "870490477735-c5j5869fe8nv9bnnanubcs71chlqv2o2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnxIkcUHiqBuQYhV-tgnWHOXn98h3BgcQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870490477735-c5j5869fe8nv9bnnanubcs71chlqv2o2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

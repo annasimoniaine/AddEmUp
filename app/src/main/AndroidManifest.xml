@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.simonebakker.simone.addemup">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -9,20 +12,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name="com.simonebakker.simone.addemup.activities.Menu">
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.simonebakker.simone.addemup.activities.GameActivity" />
-        <activity android:name="com.simonebakker.simone.addemup.activities.EndOfLevel" />
-        <activity android:name="com.simonebakker.simone.addemup.activities.GameOver" />
+        <activity android:name=".activities.Menu">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".activities.GameActivity" />
+        <activity android:name=".activities.EndOfLevel" />
+        <activity android:name=".activities.GameOver" />
         <activity
-            android:name="com.simonebakker.simone.addemup.activities.HighScores"
-            android:parentActivityName="com.simonebakker.simone.addemup.activities.Menu"/>
-        <activity android:name="com.simonebakker.simone.addemup.activities.PreLevel" />
+            android:name=".activities.HighScores"
+            android:parentActivityName=".activities.Menu" />
+        <activity android:name=".activities.PreLevel" />
+        <activity
+            android:name=".activities.AccountActivity"
+            android:parentActivityName=".activities.Menu" />
     </application>
 
 </manifest>

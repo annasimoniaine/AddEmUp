@@ -15,6 +15,7 @@ public class Menu extends AppCompatActivity {
     private Button mNewGameButton;
     private Button mResumeGameButton;
     private Button mHighscoresButton;
+    private Button mAccountButton;
 
     private Game mResumeGame;
 
@@ -54,9 +55,10 @@ public class Menu extends AppCompatActivity {
     }
 
     private void setViews() {
-        mNewGameButton = (Button) findViewById(R.id.new_game_btn);
-        mResumeGameButton = (Button) findViewById(R.id.resume_game_btn);
-        mHighscoresButton = (Button) findViewById(R.id.highscores_btn);
+        mNewGameButton = findViewById(R.id.new_game_btn);
+        mResumeGameButton = findViewById(R.id.resume_game_btn);
+        mHighscoresButton = findViewById(R.id.highscores_btn);
+        mAccountButton = findViewById(R.id.account_button);
     }
 
     private void setOnClicks() {
@@ -78,6 +80,14 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Menu.this, HighScores.class);
+                startActivity(intent);
+            }
+        });
+
+        mAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Menu.this, AccountActivity.class);
                 startActivity(intent);
             }
         });

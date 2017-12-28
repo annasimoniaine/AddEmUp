@@ -32,7 +32,7 @@ public class HighScores extends AppCompatActivity {
         mGameList = mDataSource.getHighScores();
 
         setRecyclerView();
-        setItemTouchHelper();
+//        setItemTouchHelper();
         setToolbar();
     }
 
@@ -60,27 +60,27 @@ public class HighScores extends AppCompatActivity {
         mAdapter = new HighScoreItemAdapter(this, mGameList, lastGameID);
         mHighScoresRecyclerView.setAdapter(mAdapter);
     }
-
-    private void setItemTouchHelper() {
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return true;
-            }
-
-            // Remove record from high scores (database & list) on swipe
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                mDataSource.removeGame(mGameList.get(viewHolder.getAdapterPosition()).getmID());
-
-                mGameList.remove(viewHolder.getAdapterPosition());
-                mAdapter.notifyDataSetChanged();
-            }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mHighScoresRecyclerView);
-    }
+//
+//    private void setItemTouchHelper() {
+//        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
+//                ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+//
+//            @Override
+//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+//                return true;
+//            }
+//
+//            // Remove record from high scores (database & list) on swipe
+//            @Override
+//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+//                mDataSource.removeGame(mGameList.get(viewHolder.getAdapterPosition()).getmID());
+//
+//                mGameList.remove(viewHolder.getAdapterPosition());
+//                mAdapter.notifyDataSetChanged();
+//            }
+//        };
+//
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+//        itemTouchHelper.attachToRecyclerView(mHighScoresRecyclerView);
+//    }
 }
