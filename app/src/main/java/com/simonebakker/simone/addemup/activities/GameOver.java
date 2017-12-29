@@ -17,8 +17,6 @@ public class GameOver extends AppCompatActivity {
 
     private Button mMenuBtn;
     private Button mHighscoreBtn;
-    private Button mSaveBtn;
-    private EditText mNameInput;
 
     private Game mGame;
     private int mLevelPoints;
@@ -36,7 +34,7 @@ public class GameOver extends AppCompatActivity {
         mGame = (Game) intent.getSerializableExtra("game");
         mLevelPoints = intent.getIntExtra("points", 0);
         mNeededPoints = intent.getIntExtra("needed_points", 0);
-        mLastLevel = intent.getIntExtra("last_level", 0);
+        mLastLevel = mGame.getmProgress();
 
         // boolean that's true if the finished game is a new high score
         mNewHighScore = intent.getBooleanExtra("new_highscore", false);
@@ -60,44 +58,27 @@ public class GameOver extends AppCompatActivity {
     }
 
     private void setViews() {
-        TextView mPassedLevelText = (TextView) findViewById(R.id.failed_level);
-        TextView mTotalPointsText = (TextView) findViewById(R.id.total_points);
-        TextView mLevelPointsText = (TextView) findViewById(R.id.level_points);
-        TextView mClaimScoreText = (TextView) findViewById(R.id.claim_score);
-        mMenuBtn = (Button) findViewById(R.id.menu_btn);
-        mHighscoreBtn = (Button) findViewById(R.id.highscore_btn);
-        mNameInput = (EditText) findViewById(R.id.name_input);
-        mSaveBtn = (Button) findViewById(R.id.save_btn);
+        TextView passedLevelText = findViewById(R.id.failed_level);
+        TextView totalPointsText = findViewById(R.id.total_points);
+        TextView levelPointsText = findViewById(R.id.level_points);
+        TextView highScoreText = findViewById(R.id.claim_score);
+        mMenuBtn = findViewById(R.id.menu_btn);
+        mHighscoreBtn = findViewById(R.id.highscore_btn);
 
-        mPassedLevelText.setText(getString(R.string.failed_level, String.valueOf(mLastLevel)));
-        mLevelPointsText.setText(getString(R.string.less_level_points, String.valueOf(mLevelPoints), String.valueOf(mNeededPoints)));
-        mTotalPointsText.setText(String.valueOf(mGame.getmPoints()));
+        passedLevelText.setText(getString(R.string.failed_level, String.valueOf(mLastLevel)));
+        levelPointsText.setText(getString(R.string.less_level_points, String.valueOf(mLevelPoints), String.valueOf(mNeededPoints)));
+        totalPointsText.setText(String.valueOf(mGame.getmPoints()));
 
         if (mNewHighScore) {
-            mClaimScoreText.setText(getString(R.string.claim_score));
+            highScoreText.setText(getString(R.string.yes_high_score));
+            highScoreText.setTextSize(24);
         } else {
-            mClaimScoreText.setText(getString(R.string.no_high_score));
-            mNameInput.setVisibility(View.GONE);
-            mSaveBtn.setVisibility(View.GONE);
+            highScoreText.setText(getString(R.string.no_high_score));
+            highScoreText.setTextSize(16);
         }
     }
 
     private void setOnClicks() {
-        if (mNewHighScore) {
-            // updates the name attached to the game in the db and goes to high score screen
-            mSaveBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String name = mNameInput.getText().toString();
-
-                    DataSource dataSource = new DataSource(GameOver.this);
-                    dataSource.setNameHighscore(mGame, name);
-
-                    goToHighScores();
-                }
-            });
-        }
-
         mMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

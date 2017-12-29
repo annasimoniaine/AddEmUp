@@ -43,7 +43,7 @@ public class DataSource {
                 GameContract.GameEntry.COLUMN_NAME_DATE +
                 " FROM " + GameContract.GameEntry.TABLE_NAME +
                 " WHERE " + GameContract.GameEntry.COLUMN_NAME_PROGRESS + " = -1" +
-                " ORDER BY " + GameContract.GameEntry.COLUMN_NAME_POINTS + " DESC LIMIT 8";
+                " ORDER BY " + GameContract.GameEntry.COLUMN_NAME_POINTS + " DESC LIMIT 10";
 
         List<Game> gameList = new ArrayList<>();
         Cursor cursor = db.rawQuery(selectQuery, null);

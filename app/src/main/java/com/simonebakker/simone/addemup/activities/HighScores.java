@@ -7,18 +7,23 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.simonebakker.simone.addemup.R;
 import com.simonebakker.simone.addemup.adapter.HighScoreItemAdapter;
-import com.simonebakker.simone.addemup.database.DataSource;
 import com.simonebakker.simone.addemup.models.Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HighScores extends AppCompatActivity {
 
-    private DataSource mDataSource;
+//    private DataSource mDataSource;
     private List<Game> mGameList;
     private RecyclerView mHighScoresRecyclerView;
     private HighScoreItemAdapter mAdapter;
@@ -28,26 +33,22 @@ public class HighScores extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_scores);
 
-        mDataSource = new DataSource(HighScores.this);
-        mGameList = mDataSource.getHighScores();
-
-        setRecyclerView();
-//        setItemTouchHelper();
         setToolbar();
+        getHighscores();
     }
 
     public void setToolbar() {
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle(getString(R.string.high_scores_top));
+            ab.setTitle(getString(R.string.high_scores));
         }
     }
 
     private void setRecyclerView() {
-        mHighScoresRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mHighScoresRecyclerView = findViewById(R.id.recyclerView);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mHighScoresRecyclerView.setLayoutManager(mLayoutManager);
@@ -60,27 +61,33 @@ public class HighScores extends AppCompatActivity {
         mAdapter = new HighScoreItemAdapter(this, mGameList, lastGameID);
         mHighScoresRecyclerView.setAdapter(mAdapter);
     }
-//
-//    private void setItemTouchHelper() {
-//        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
-//                ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//
-//            @Override
-//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-//                return true;
-//            }
-//
-//            // Remove record from high scores (database & list) on swipe
-//            @Override
-//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-//                mDataSource.removeGame(mGameList.get(viewHolder.getAdapterPosition()).getmID());
-//
-//                mGameList.remove(viewHolder.getAdapterPosition());
-//                mAdapter.notifyDataSetChanged();
-//            }
-//        };
-//
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-//        itemTouchHelper.attachToRecyclerView(mHighScoresRecyclerView);
-//    }
+
+    private void getHighscores() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference();
+        databaseReference.child("game").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Game> gameList = new ArrayList<>();
+
+                for (DataSnapshot gameSnapShot : dataSnapshot.getChildren()) {
+                    Game newGame = new Game();
+                    newGame.setmPoints(Integer.parseInt(gameSnapShot.child("score").getValue().toString()));
+                    // TODO: get username from userID (when
+                    newGame.setmName(gameSnapShot.child("userID").getValue().toString());
+                    newGame.setmProgress(Integer.parseInt(gameSnapShot.child("level").getValue().toString()));
+                    newGame.setmDate(gameSnapShot.child("date").getValue().toString());
+
+                    gameList.add(newGame);
+                }
+                mGameList = gameList;
+                setRecyclerView();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Errorrr", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
 }

@@ -3,10 +3,10 @@ package com.simonebakker.simone.addemup.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -44,7 +44,7 @@ public class GameActivity extends AppCompatActivity {
     private ToggleButton[] mNumberButtons;
 
     private Game mGame;
-    private Level level;
+    private Level mLevel;
 
     private int[] mNumbers;
     private int mGoalNumber;
@@ -52,7 +52,6 @@ public class GameActivity extends AppCompatActivity {
     private int mButtonsClicked;
 
     private int mPointsLevel;
-    private int lastLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,27 +74,27 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setViews() {
-        mLevelView = (TextView) findViewById(R.id.level_view);
-        mPointsView = (TextView) findViewById(R.id.points_view);
-        mTimeView = (TextView) findViewById(R.id.time_view);
-        mGoalView = (TextView) findViewById(R.id.goal_view);
-        mExplanationView = (TextView) findViewById(R.id.explanation_view);
-        mRightWrongImage = (ImageView) findViewById(R.id.rightWrongImage);
+        mLevelView = findViewById(R.id.level_view);
+        mPointsView = findViewById(R.id.points_view);
+        mTimeView = findViewById(R.id.time_view);
+        mGoalView = findViewById(R.id.goal_view);
+        mExplanationView = findViewById(R.id.explanation_view);
+        mRightWrongImage = findViewById(R.id.rightWrongImage);
 
-        mSubmitBtn = (Button) findViewById(R.id.submit_btn);
+        mSubmitBtn = findViewById(R.id.submit_btn);
         mNumberButtons = new ToggleButton[]{
-                (ToggleButton) findViewById(R.id.number_1),
-                (ToggleButton) findViewById(R.id.number_2),
-                (ToggleButton) findViewById(R.id.number_3),
-                (ToggleButton) findViewById(R.id.number_4),
-                (ToggleButton) findViewById(R.id.number_5),
-                (ToggleButton) findViewById(R.id.number_6)
+                findViewById(R.id.number_1),
+                findViewById(R.id.number_2),
+                findViewById(R.id.number_3),
+                findViewById(R.id.number_4),
+                findViewById(R.id.number_5),
+                findViewById(R.id.number_6)
         };
     }
 
     private void setLevelVariables() {
         mPointsLevel = 0;
-        level = new Level(mGame.getmProgress());
+        mLevel = new Level(mGame.getmProgress());
     }
 
     // sets a new goal and updates the views, called when answer is submitted
@@ -104,7 +103,7 @@ public class GameActivity extends AppCompatActivity {
         fillViews();
     }
 
-    // chooses 6 random numbers in the level's range
+    // chooses 6 random numbers in the mLevel's range
     // makes the goal by adding some of the numbers
     // shuffles the array
     private void setGameVariables() {
@@ -118,11 +117,11 @@ public class GameActivity extends AppCompatActivity {
         mNumbers = new int[numberOfNumbers];
         for (int i = 0; i < numberOfNumbers; i++) {
             Random rand = new Random();
-            mNumbers[i] = rand.nextInt(level.getmMaxRange()) + level.getmMinRange();
+            mNumbers[i] = rand.nextInt(mLevel.getmMaxRange()) + mLevel.getmMinRange();
         }
 
         mGoalNumber = 0;
-        for (int i = 0; i < level.getmAmountOfNumbers(); i++) {
+        for (int i = 0; i < mLevel.getmAmountOfNumbers(); i++) {
             mGoalNumber += mNumbers[i];
         }
         shuffleArray(mNumbers);
@@ -146,7 +145,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         mGoalView.setText(String.valueOf(mGoalNumber));
-        mExplanationView.setText(getString(R.string.instruction, String.valueOf(level.getmAmountOfNumbers()), String.valueOf(mGoalNumber)));
+        mExplanationView.setText(getString(R.string.instruction, String.valueOf(mLevel.getmAmountOfNumbers()), String.valueOf(mGoalNumber)));
         mPointsView.setText(getString(R.string.points, String.valueOf(mPointsLevel)));
         mLevelView.setText(getString(R.string.level, String.valueOf(mGame.getmProgress())));
     }
@@ -175,7 +174,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             mRightWrongImage.setImageResource(R.drawable.check);
             showAnimation();
-            mPointsLevel += level.getmPointsForCorrect();
+            mPointsLevel += mLevel.getmPointsForCorrect();
             setGoal();
         }
     }
@@ -207,19 +206,19 @@ public class GameActivity extends AppCompatActivity {
                     view.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                     mCurrentSum += parseInt(view.getText().toString());
                     mButtonsClicked++;
-                    if (mButtonsClicked > level.getmAmountOfNumbers()) {
+                    if (mButtonsClicked > mLevel.getmAmountOfNumbers()) {
                         disableSubmitButton();
                     }
                 } else {
                     view.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                     mCurrentSum -= parseInt(view.getText().toString());
                     mButtonsClicked--;
-                    if (mButtonsClicked < level.getmAmountOfNumbers()) {
+                    if (mButtonsClicked < mLevel.getmAmountOfNumbers()) {
                         disableSubmitButton();
                     }
                 }
 
-                if (mButtonsClicked == level.getmAmountOfNumbers()) {
+                if (mButtonsClicked == mLevel.getmAmountOfNumbers()) {
                     enableSubmitButton();
                 }
             }
@@ -232,15 +231,15 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void disableSubmitButton() {
-        mSubmitBtn.setText(getString(R.string.wrong_amount, String.valueOf(level.getmAmountOfNumbers())));
+        mSubmitBtn.setText(getString(R.string.wrong_amount, String.valueOf(mLevel.getmAmountOfNumbers())));
         mSubmitBtn.setEnabled(false);
     }
 
-    // sets countdown for the length of the level
+    // sets countdown for the length of the mLevel
     // shows the timer counting down in mm:ss format
-    // checks if user got enough points and ends level when countdown is done
+    // checks if user got enough points and ends mLevel when countdown is done
     private void setCountdown() {
-        new CountDownTimer(level.getmLevelTime(), 1000) {
+        new CountDownTimer(mLevel.getmLevelTime(), 1000) {
             public void onTick(long msLeft) {
                 String minutes = String.valueOf(msLeft / 60000);
                 if (parseInt(minutes) < 10) {
@@ -253,8 +252,9 @@ public class GameActivity extends AppCompatActivity {
                 String time = minutes + ":" + seconds;
                 mTimeView.setText(getString(R.string.time, time));
             }
+
             public void onFinish() {
-                if (mPointsLevel >= level.getmNeededPoints()) {
+                if (mPointsLevel >= mLevel.getmNeededPoints()) {
                     passLevel();
                 } else {
                     failLevel();
@@ -263,35 +263,31 @@ public class GameActivity extends AppCompatActivity {
         }.start();
     }
 
-    // called when not enough points at end of level
+    // called when not enough points at end of mLevel
     // if enough points throughout the game, sets as highscore in db
     // else removes the game from db
     // starts the GameOver activity
     private void failLevel() {
-        lastLevel = mGame.getmProgress();
-        mGame.setmProgress(-1);
         mGame.setCurrentDate();
+        saveHighscore();
 
-        dataSource = new DataSource(GameActivity.this);
-        boolean newHighScore = newHighScore();
-        if (newHighScore) {
-            saveHighscore();
-        } else if (mGame.getmID() == -1) {
+        // TODO: better way of removing game if it's currently saved game
+        if (mGame.getmID() == -1) {
+            dataSource = new DataSource(GameActivity.this);
             dataSource.removeGame(mGame.getmID());
         }
 
         Intent intent = new Intent(GameActivity.this, GameOver.class);
         intent.putExtra("game", mGame);
         intent.putExtra("points", mPointsLevel);
-        intent.putExtra("needed_points", level.getmNeededPoints());
-        intent.putExtra("last_level", lastLevel);
-        intent.putExtra("new_highscore", newHighScore);
+        intent.putExtra("needed_points", mLevel.getmNeededPoints());
+        intent.putExtra("new_highscore", newHighScore());
         startActivity(intent);
         finish();
     }
 
-    // call when enough points to pass the level
-    // ups the progress by one level
+    // call when enough points to pass the mLevel
+    // ups the progress by one mLevel
     // starts the EndOfLevel activity
     private void passLevel() {
         mGame.setmPoints(mGame.getmPoints() + mPointsLevel);
@@ -306,10 +302,10 @@ public class GameActivity extends AppCompatActivity {
     // Checks whether the total score for the game is high enough to make the high score list
     public boolean newHighScore() {
         List<Game> highScores = dataSource.getHighScores();
-        int highScoreListSize = 8;
+        final int HIGHSCORE_LIST_SIZE = 10;
 
-        if (highScores.size() == highScoreListSize) {
-            Game lastScore = highScores.get(highScoreListSize - 1);
+        if (highScores.size() == HIGHSCORE_LIST_SIZE) {
+            Game lastScore = highScores.get(HIGHSCORE_LIST_SIZE - 1);
             return mGame.getmPoints() > lastScore.getmPoints();
         }
 
@@ -319,26 +315,23 @@ public class GameActivity extends AppCompatActivity {
     // saves the game as a high score in db, either by adding or by updating db record
     private void saveHighscore() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("game");
+        DatabaseReference databaseReference = database.getReference("game");
 
         HashMap<String, Object> valuesToPut = new HashMap<>();
         valuesToPut.put("score", mGame.getmPoints());
         valuesToPut.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        valuesToPut.put("level", lastLevel);
+        valuesToPut.put("level", mGame.getmProgress());
         valuesToPut.put("date", mGame.getmDate());
 
-        myRef.push().setValue(valuesToPut);
-        // points, userID, level (progress), date
-        // valuesToPut.put(name_of_row, value);
+        databaseReference.push().setValue(valuesToPut);
 
-
-        // TODO: remove all this when firebase works entirely (except saved game, make that work locally)
+        // TODO: remove all this when firebase works entirely (except saved game, make that work locally from failLevel or own method)
         // if id is -1, it's a new game, else it was retrieved from the db, so needs to be updated
-        if (mGame.getmID() == -1) {
-            int newGameID = dataSource.saveGame(mGame);
-            mGame.setmID(newGameID);
-        } else {
-            dataSource.finishGame(mGame);
-        }
+//        if (mGame.getmID() == -1) {
+//            int newGameID = dataSource.saveGame(mGame);
+//            mGame.setmID(newGameID);
+//        } else {
+//            dataSource.finishGame(mGame);
+//        }
     }
 }

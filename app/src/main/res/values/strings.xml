@@ -22,7 +22,7 @@
     <string name="date">Date</string>
     <string name="name">Name</string>
     <string name="high_scores">HIGH SCORES</string>
-    <string name="high_scores_top">HIGH SCORES - TOP 8</string>
+    <!--<string name="high_scores_top">HIGH SCORES - TOP 8</string>-->
     <string name="anonymous">Anonymous</string>
     <string name="no_resume_game">No saved game</string>
     <string name="submit">Submit</string>
@@ -35,6 +35,7 @@
     <string name="claim_score">Claim your score by adding your name</string>
     <string name="save">Save</string>
     <string name="no_high_score">This is not a new high score</string>
+    <string name="yes_high_score">This is a new high score!</string>
     <string name="signed_in_cancelled">Signing in failed</string>
     <string name="account">My account</string>
     <string name="sign_out">Sign out</string>
