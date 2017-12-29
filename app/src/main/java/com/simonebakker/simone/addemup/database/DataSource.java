@@ -32,37 +32,6 @@ public class DataSource {
         return gameID;
     }
 
-    // Select (gets the 8 finished games with the highest scores and returns them as a list of games)
-    public List<Game> getHighScores() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectQuery = "SELECT  " +
-                GameContract.GameEntry.COLUMN_NAME_ID + ',' +
-                GameContract.GameEntry.COLUMN_NAME_NAME + ',' +
-                GameContract.GameEntry.COLUMN_NAME_POINTS + ',' +
-                GameContract.GameEntry.COLUMN_NAME_PROGRESS + ',' +
-                GameContract.GameEntry.COLUMN_NAME_DATE +
-                " FROM " + GameContract.GameEntry.TABLE_NAME +
-                " WHERE " + GameContract.GameEntry.COLUMN_NAME_PROGRESS + " = -1" +
-                " ORDER BY " + GameContract.GameEntry.COLUMN_NAME_POINTS + " DESC LIMIT 10";
-
-        List<Game> gameList = new ArrayList<>();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Game game = new Game();
-                game.setmID(cursor.getInt(cursor.getColumnIndex(GameContract.GameEntry.COLUMN_NAME_ID)));
-                game.setmName(cursor.getString(cursor.getColumnIndex(GameContract.GameEntry.COLUMN_NAME_NAME)));
-                game.setmPoints(cursor.getInt(cursor.getColumnIndex(GameContract.GameEntry.COLUMN_NAME_POINTS)));
-                game.setmProgress(cursor.getInt(cursor.getColumnIndex(GameContract.GameEntry.COLUMN_NAME_PROGRESS)));
-                game.setmDate(cursor.getString(cursor.getColumnIndex(GameContract.GameEntry.COLUMN_NAME_DATE)));
-                gameList.add(game);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return gameList;
-    }
-
     // Select (for resume, gets the non-finished game and returns it as a game object)
     public Game getCurrentGame() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();

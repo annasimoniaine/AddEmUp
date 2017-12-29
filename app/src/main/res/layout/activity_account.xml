@@ -100,12 +100,12 @@
         android:text="@string/statistics" />
 
     <TextView
-        android:id="@+id/highest_rank"
+        android:id="@+id/amount_of_games"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:layout_marginStart="8dp"
-        tools:text="Highest rank: "/>
+        tools:text="Games played: "/>
 
     <TextView
         android:id="@+id/highest_score"

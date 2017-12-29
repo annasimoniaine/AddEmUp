@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +22,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.simonebakker.simone.addemup.R;
+import com.simonebakker.simone.addemup.models.Game;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -36,6 +47,8 @@ public class AccountActivity extends AppCompatActivity {
     private LinearLayout mNameLayout;
     private TextView mNameView;
     private EditText mNameEdit;
+
+    private List<String> mStats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,13 +126,18 @@ public class AccountActivity extends AppCompatActivity {
         TextView emailView = findViewById(R.id.email_view);
         emailView.setText(mEmail);
 
-        fillStats();
         bindImage();
+        getStats();
     }
 
-    private void fillStats() {
-        // TODO: fill statistics using firebase calls
-        // Also add total number of games played?
+    private void fillStats(int amountOfGames, int highestScore, int highestLevel) {
+        TextView highestScoreView = findViewById(R.id.highest_score);
+        TextView gamesPlayedView = findViewById(R.id.amount_of_games);
+        TextView highestLevelView = findViewById(R.id.highest_level);
+
+        highestScoreView.setText(getString(R.string.highest_score, highestScore));
+        gamesPlayedView.setText(getString(R.string.games_played, amountOfGames));
+        highestLevelView.setText(getString(R.string.highest_level, highestLevel));
     }
 
     private void bindImage() {
@@ -175,6 +193,37 @@ public class AccountActivity extends AppCompatActivity {
                 });
     }
 
+    private void getStats() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference();
+        databaseReference.child("game")
+                .orderByChild("userID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int amountOfGames = 0;
+                int highestScore = 0;
+                int highestLevel = 0;
+
+                for (DataSnapshot gameSnapShot : dataSnapshot.getChildren()) {
+                    amountOfGames++;
+                    if (Integer.parseInt(gameSnapShot.child("score").getValue().toString()) > highestScore) {
+                        highestScore = Integer.parseInt(gameSnapShot.child("score").getValue().toString());
+                    }
+                    if (Integer.parseInt(gameSnapShot.child("level").getValue().toString()) > highestLevel) {
+                        highestLevel = Integer.parseInt(gameSnapShot.child("level").getValue().toString());
+                    }
+                }
+
+                fillStats(amountOfGames, highestScore, highestLevel);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Errorrr", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
 
     private void backToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);

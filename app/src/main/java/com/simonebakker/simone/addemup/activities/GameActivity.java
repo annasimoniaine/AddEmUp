@@ -298,7 +298,7 @@ public class GameActivity extends AppCompatActivity {
         finish();
     }
 
-    // saves the game as a high score in db, either by adding or by updating db record
+    // saves the game as a high score in firebase
     private void saveHighscore() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference("game");
@@ -306,6 +306,7 @@ public class GameActivity extends AppCompatActivity {
         HashMap<String, Object> valuesToPut = new HashMap<>();
         valuesToPut.put("score", mGame.getmPoints());
         valuesToPut.put("name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        valuesToPut.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
         valuesToPut.put("level", mGame.getmProgress());
         valuesToPut.put("date", mGame.getmDate());
 
