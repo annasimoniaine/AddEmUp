@@ -16,7 +16,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="/You failed level x with:/"
+        tools:text="/You failed level x with:/"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/level_points"
         app:layout_constraintHorizontal_bias="0.504"
@@ -48,7 +48,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="/points/"
+        tools:text="/points/"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:textSize="30sp"
         app:layout_constraintHorizontal_bias="0.501"
@@ -66,14 +66,14 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        tools:text="/y out of the required z points/"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/menu_btn"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.502" />
+        app:layout_constraintVertical_bias="0.502"
+        tools:text="/y out of the required z points/" />
 
     <Button
         android:id="@+id/highscore_btn"
@@ -107,17 +107,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo"
         tools:layout_editor_absoluteX="0dp" />
-
-    <TextView
-        android:id="@+id/claim_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/yes_high_score"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/total_points" />
 
 </android.support.constraint.ConstraintLayout>

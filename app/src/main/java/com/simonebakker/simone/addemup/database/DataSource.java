@@ -102,32 +102,4 @@ public class DataSource {
         db.delete(GameContract.GameEntry.TABLE_NAME, GameContract.GameEntry.COLUMN_NAME_ID + "=?", new String[] {String.valueOf(id)});
         db.close();
     }
-
-    // Update (changes unfinished game to finished, used when currently save game becomes a high score)
-    public void finishGame(Game game) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(GameContract.GameEntry.COLUMN_NAME_POINTS, game.getmPoints());
-        values.put(GameContract.GameEntry.COLUMN_NAME_PROGRESS, game.getmProgress());
-        values.put(GameContract.GameEntry.COLUMN_NAME_DATE, game.getmDate());
-
-        db.update(GameContract.GameEntry.TABLE_NAME, values, GameContract.GameEntry.COLUMN_NAME_ID + "=?",
-                new String[] {String.valueOf(game.getmID())});
-
-        db.close();
-    }
-
-    // Update (sets a value for the name column of a record, used when providing a name for a high score)
-    public void setNameHighscore(Game game, String name) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(GameContract.GameEntry.COLUMN_NAME_NAME, name);
-
-        db.update(GameContract.GameEntry.TABLE_NAME, values, GameContract.GameEntry.COLUMN_NAME_ID + "=?",
-                new String[] {String.valueOf(game.getmID())});
-
-        db.close();
-    }
 }

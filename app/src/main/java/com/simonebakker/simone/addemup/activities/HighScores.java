@@ -1,9 +1,9 @@
 package com.simonebakker.simone.addemup.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +23,6 @@ import java.util.List;
 
 public class HighScores extends AppCompatActivity {
 
-//    private DataSource mDataSource;
     private List<Game> mGameList;
     private RecyclerView mHighScoresRecyclerView;
     private HighScoreItemAdapter mAdapter;
@@ -73,7 +72,7 @@ public class HighScores extends AppCompatActivity {
                 for (DataSnapshot gameSnapShot : dataSnapshot.getChildren()) {
                     Game newGame = new Game();
                     newGame.setmPoints(Integer.parseInt(gameSnapShot.child("score").getValue().toString()));
-                    // TODO: get username from userID (when
+                    // TODO: get username from userID (when adding to firebase?)
                     newGame.setmName(gameSnapShot.child("userID").getValue().toString());
                     newGame.setmProgress(Integer.parseInt(gameSnapShot.child("level").getValue().toString()));
                     newGame.setmDate(gameSnapShot.child("date").getValue().toString());

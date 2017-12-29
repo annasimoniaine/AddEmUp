@@ -271,7 +271,7 @@ public class GameActivity extends AppCompatActivity {
         mGame.setCurrentDate();
         saveHighscore();
 
-        // TODO: better way of removing game if it's currently saved game
+        // TODO: better way of checking if it's currently saved game, if it is remove game from here
         if (mGame.getmID() == -1) {
             dataSource = new DataSource(GameActivity.this);
             dataSource.removeGame(mGame.getmID());
@@ -281,7 +281,6 @@ public class GameActivity extends AppCompatActivity {
         intent.putExtra("game", mGame);
         intent.putExtra("points", mPointsLevel);
         intent.putExtra("needed_points", mLevel.getmNeededPoints());
-        intent.putExtra("new_highscore", newHighScore());
         startActivity(intent);
         finish();
     }
@@ -299,19 +298,6 @@ public class GameActivity extends AppCompatActivity {
         finish();
     }
 
-    // Checks whether the total score for the game is high enough to make the high score list
-    public boolean newHighScore() {
-        List<Game> highScores = dataSource.getHighScores();
-        final int HIGHSCORE_LIST_SIZE = 10;
-
-        if (highScores.size() == HIGHSCORE_LIST_SIZE) {
-            Game lastScore = highScores.get(HIGHSCORE_LIST_SIZE - 1);
-            return mGame.getmPoints() > lastScore.getmPoints();
-        }
-
-        return true;
-    }
-
     // saves the game as a high score in db, either by adding or by updating db record
     private void saveHighscore() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -324,14 +310,5 @@ public class GameActivity extends AppCompatActivity {
         valuesToPut.put("date", mGame.getmDate());
 
         databaseReference.push().setValue(valuesToPut);
-
-        // TODO: remove all this when firebase works entirely (except saved game, make that work locally from failLevel or own method)
-        // if id is -1, it's a new game, else it was retrieved from the db, so needs to be updated
-//        if (mGame.getmID() == -1) {
-//            int newGameID = dataSource.saveGame(mGame);
-//            mGame.setmID(newGameID);
-//        } else {
-//            dataSource.finishGame(mGame);
-//        }
     }
 }
