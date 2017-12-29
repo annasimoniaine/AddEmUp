@@ -48,8 +48,6 @@ public class AccountActivity extends AppCompatActivity {
     private TextView mNameView;
     private EditText mNameEdit;
 
-    private List<String> mStats;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

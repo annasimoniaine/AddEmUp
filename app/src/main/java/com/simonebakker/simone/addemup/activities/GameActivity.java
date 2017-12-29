@@ -30,8 +30,6 @@ import static java.lang.Integer.parseInt;
 
 public class GameActivity extends AppCompatActivity {
 
-    private DataSource dataSource;
-
     private TextView mLevelView;
     private TextView mPointsView;
     private TextView mTimeView;
@@ -273,7 +271,7 @@ public class GameActivity extends AppCompatActivity {
 
         // TODO: better way of checking if it's currently saved game, if it is remove game from here
         if (mGame.getmID() == -1) {
-            dataSource = new DataSource(GameActivity.this);
+            DataSource dataSource = new DataSource(GameActivity.this);
             dataSource.removeGame(mGame.getmID());
         }
 
