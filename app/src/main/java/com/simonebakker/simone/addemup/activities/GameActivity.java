@@ -14,11 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.simonebakker.simone.addemup.R;
 import com.simonebakker.simone.addemup.database.DataSource;
 import com.simonebakker.simone.addemup.models.Game;
 import com.simonebakker.simone.addemup.models.Level;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -48,6 +52,7 @@ public class GameActivity extends AppCompatActivity {
     private int mButtonsClicked;
 
     private int mPointsLevel;
+    private int lastLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,7 +268,7 @@ public class GameActivity extends AppCompatActivity {
     // else removes the game from db
     // starts the GameOver activity
     private void failLevel() {
-        int lastLevel = mGame.getmProgress();
+        lastLevel = mGame.getmProgress();
         mGame.setmProgress(-1);
         mGame.setCurrentDate();
 
@@ -313,6 +318,21 @@ public class GameActivity extends AppCompatActivity {
 
     // saves the game as a high score in db, either by adding or by updating db record
     private void saveHighscore() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("game");
+
+        HashMap<String, Object> valuesToPut = new HashMap<>();
+        valuesToPut.put("score", mGame.getmPoints());
+        valuesToPut.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        valuesToPut.put("level", lastLevel);
+        valuesToPut.put("date", mGame.getmDate());
+
+        myRef.push().setValue(valuesToPut);
+        // points, userID, level (progress), date
+        // valuesToPut.put(name_of_row, value);
+
+
+        // TODO: remove all this when firebase works entirely (except saved game, make that work locally)
         // if id is -1, it's a new game, else it was retrieved from the db, so needs to be updated
         if (mGame.getmID() == -1) {
             int newGameID = dataSource.saveGame(mGame);

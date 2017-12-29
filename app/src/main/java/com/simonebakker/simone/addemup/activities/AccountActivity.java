@@ -119,6 +119,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private void fillStats() {
         // TODO: fill statistics using firebase calls
+        // Also add total number of games played?
     }
 
     private void bindImage() {
