@@ -305,7 +305,7 @@ public class GameActivity extends AppCompatActivity {
 
         HashMap<String, Object> valuesToPut = new HashMap<>();
         valuesToPut.put("score", mGame.getmPoints());
-        valuesToPut.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        valuesToPut.put("name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         valuesToPut.put("level", mGame.getmProgress());
         valuesToPut.put("date", mGame.getmDate());
 

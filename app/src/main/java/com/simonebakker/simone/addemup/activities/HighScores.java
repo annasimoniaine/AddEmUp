@@ -19,6 +19,7 @@ import com.simonebakker.simone.addemup.adapter.HighScoreItemAdapter;
 import com.simonebakker.simone.addemup.models.Game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HighScores extends AppCompatActivity {
@@ -64,7 +65,7 @@ public class HighScores extends AppCompatActivity {
     private void getHighscores() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
-        databaseReference.child("game").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("game").orderByChild("score").limitToLast(25).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Game> gameList = new ArrayList<>();
@@ -72,13 +73,14 @@ public class HighScores extends AppCompatActivity {
                 for (DataSnapshot gameSnapShot : dataSnapshot.getChildren()) {
                     Game newGame = new Game();
                     newGame.setmPoints(Integer.parseInt(gameSnapShot.child("score").getValue().toString()));
-                    // TODO: get username from userID (when adding to firebase?)
-                    newGame.setmName(gameSnapShot.child("userID").getValue().toString());
+                    newGame.setmName(gameSnapShot.child("name").getValue().toString());
                     newGame.setmProgress(Integer.parseInt(gameSnapShot.child("level").getValue().toString()));
                     newGame.setmDate(gameSnapShot.child("date").getValue().toString());
 
                     gameList.add(newGame);
                 }
+
+                Collections.reverse(gameList);
                 mGameList = gameList;
                 setRecyclerView();
             }
