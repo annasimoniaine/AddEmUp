@@ -17,7 +17,7 @@ public class DataSource {
     }
 
     // Create
-    public int saveGame(Game game) {
+    public void saveGame(Game game) {
         // Open connection to write data
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -26,10 +26,8 @@ public class DataSource {
         values.put(GameContract.GameEntry.COLUMN_NAME_NAME, "");
         values.put(GameContract.GameEntry.COLUMN_NAME_PROGRESS, game.getmProgress());
         values.put(GameContract.GameEntry.COLUMN_NAME_DATE, game.getmDate());
-        int gameID = (int) db.insert(GameContract.GameEntry.TABLE_NAME, null, values);
+        db.insert(GameContract.GameEntry.TABLE_NAME, null, values);
         db.close(); // Closing database connection
-
-        return gameID;
     }
 
     // Select (for resume, gets the non-finished game and returns it as a game object)
@@ -61,14 +59,7 @@ public class DataSource {
     // Delete (removes all unfinished games, used before new currently saved game is added)
     public void removePrevious() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(GameContract.GameEntry.TABLE_NAME, GameContract.GameEntry.COLUMN_NAME_PROGRESS + "!=?", new String[] {"-1"});
-        db.close();
-    }
-
-    // Delete (removes specific record from db, used from high score screen on swipe)
-    public void removeGame(int id) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(GameContract.GameEntry.TABLE_NAME, GameContract.GameEntry.COLUMN_NAME_ID + "=?", new String[] {String.valueOf(id)});
+        db.delete(GameContract.GameEntry.TABLE_NAME, null, null);
         db.close();
     }
 }

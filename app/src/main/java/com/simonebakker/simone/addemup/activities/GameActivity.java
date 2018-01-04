@@ -23,7 +23,6 @@ import com.simonebakker.simone.addemup.models.Game;
 import com.simonebakker.simone.addemup.models.Level;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import static java.lang.Integer.parseInt;
@@ -262,18 +261,15 @@ public class GameActivity extends AppCompatActivity {
     }
 
     // called when not enough points at end of mLevel
-    // if enough points throughout the game, sets as highscore in db
-    // else removes the game from db
+    // sets the game as a new highscore in firebase
+    // also cleares the saved game from the sqlite db
     // starts the GameOver activity
     private void failLevel() {
         mGame.setCurrentDate();
         saveHighscore();
 
-        // TODO: better way of checking if it's currently saved game, if it is remove game from here
-        if (mGame.getmID() == -1) {
-            DataSource dataSource = new DataSource(GameActivity.this);
-            dataSource.removeGame(mGame.getmID());
-        }
+        DataSource dataSource = new DataSource(GameActivity.this);
+        dataSource.removePrevious();
 
         Intent intent = new Intent(GameActivity.this, GameOver.class);
         intent.putExtra("game", mGame);
