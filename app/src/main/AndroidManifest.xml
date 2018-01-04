@@ -3,6 +3,11 @@
     package="com.simonebakker.simone.addemup">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -29,9 +34,6 @@
         <activity
             android:name=".activities.AccountActivity"
             android:parentActivityName=".activities.Menu" />
-        <activity
-            android:name=".activities.EditAccountActivity"
-            android:parentActivityName=".activities.AccountActivity" />
     </application>
 
 </manifest>
