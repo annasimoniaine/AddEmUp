@@ -157,6 +157,7 @@ public class AccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mNameLayout.setVisibility(View.GONE);
                 mEditNameLayout.setVisibility(View.VISIBLE);
+                mNameEdit.setHint(mName);
                 mNameEdit.setEnabled(true);
             }
         });
