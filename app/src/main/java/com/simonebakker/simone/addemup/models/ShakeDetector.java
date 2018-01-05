@@ -4,31 +4,23 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.FloatMath;
 
 public class ShakeDetector implements SensorEventListener {
 
-    /*
-     * The gForce that is necessary to register as shake.
-     * Must be greater than 1G (one earth gravity unit).
-     * You can install "G-Force", by Blake La Pierre
-     * from the Google Play Store and run it to see how
-     *  many G's it takes to register a shake
-     */
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
     private static final int SHAKE_SLOP_TIME_MS = 500;
-    private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
+//    private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
 
     private OnShakeListener mListener;
     private long mShakeTimestamp;
-    private int mShakeCount;
+//    private int mShakeCount;
 
     public void setOnShakeListener(OnShakeListener listener) {
         this.mListener = listener;
     }
 
     public interface OnShakeListener {
-        public void onShake(int count);
+        public void onShake();
     }
 
     @Override
@@ -58,15 +50,15 @@ public class ShakeDetector implements SensorEventListener {
                     return;
                 }
 
-                // reset the shake count after 3 seconds of no shakes
-                if (mShakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
-                    mShakeCount = 0;
-                }
+//                // reset the shake count after 3 seconds of no shakes
+//                if (mShakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
+//                    mShakeCount = 0;
+//                }
 
                 mShakeTimestamp = now;
-                mShakeCount++;
+//                mShakeCount++;
 
-                mListener.onShake(mShakeCount);
+                mListener.onShake();
             }
         }
     }

@@ -52,45 +52,45 @@ public class Level {
                 setValues(2, 15, 35, 30, 30000, 180);
                 break;
             case 13:
-                setValues(3, 1, 10, 35, 30000, 140);
+                setValues(3, 1, 10, 35, 60000, 280);
                 break;
             case 14:
-                setValues(3, 1, 10, 35, 30000, 175);
+                setValues(3, 1, 10, 35, 60000, 315);
                 break;
             case 15:
-                setValues(3, 1, 15, 40, 30000, 200);
+                setValues(3, 1, 15, 40, 60000, 320);
                 break;
             case 16:
-                setValues(3, 1, 15, 40, 30000, 240);
+                setValues(3, 1, 15, 40, 60000, 360);
                 break;
             case 17:
-                setValues(3, 1, 20, 45, 30000, 225);
+                setValues(3, 1, 20, 45, 60000, 360);
                 break;
             case 18:
-                setValues(3, 1, 20, 45, 30000, 270);
+                setValues(3, 1, 20, 45, 60000, 405);
                 break;
             case 19:
-                setValues(3, 1, 25, 50, 30000, 250);
+                setValues(3, 1, 25, 50, 60000, 400);
                 break;
             case 20:
-                setValues(3, 1, 25, 50, 30000, 300);
+                setValues(3, 1, 25, 50, 60000, 450);
                 break;
             case 21:
-                setValues(3, 10, 30, 55, 30000, 275);
+                setValues(3, 10, 30, 55, 60000, 440);
                 break;
             case 22:
-                setValues(3, 10, 30, 55, 30000, 330);
+                setValues(3, 10, 30, 55, 60000, 495);
                 break;
             case 23:
-                setValues(3, 15, 35, 60, 30000, 300);
+                setValues(3, 15, 35, 60, 60000, 480);
                 break;
             case 24:
-                setValues(3, 15, 35, 60, 30000, 360);
+                setValues(3, 15, 35, 60, 60000, 540);
                 break;
             default:
                 // after level 24, the variables don't change anymore
                 // except you need more and more points to pass the level
-                int neededPoints = (numberLevel - 24) * 35 + 360;
+                int neededPoints = (numberLevel - 24) * 35 + 540;
                 setValues(3, 15, 35, 60, 30000, neededPoints);
                 break;
         }

@@ -149,6 +149,23 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void shuffleNumberViews() {
+        for (ToggleButton btn : mNumberButtons) {
+            final ToggleButton BTN = btn;
+            final float defaultX = BTN.getX();
+            BTN.setChecked(false);
+            BTN.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+            BTN.animate().translationXBy(50).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    BTN.setX(defaultX);
+                    BTN.setBackgroundColor(getColor(R.color.colorPrimary));
+                }
+            });
+        }
+        mButtonsClicked = 0;
+        mCurrentSum = 0;
+
         shuffleArray(mNumbers);
         int i = 0;
         for (ToggleButton btn : mNumberButtons) {
@@ -193,7 +210,7 @@ public class GameActivity extends AppCompatActivity {
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
             @Override
-            public void onShake(int count) {
+            public void onShake() {
                 shuffleNumberViews();
             }
         });
