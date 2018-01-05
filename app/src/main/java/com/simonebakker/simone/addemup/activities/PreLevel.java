@@ -12,6 +12,9 @@ import com.simonebakker.simone.addemup.models.Level;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ * Activity that's shown before a level starts to announce the setting & variables
+ */
 public class PreLevel extends AppCompatActivity {
 
     private Game mGame;
@@ -35,12 +38,15 @@ public class PreLevel extends AppCompatActivity {
     public void onBackPressed() {
     }
 
+    /**
+     * Sets the text views
+     */
     private void setViews() {
-        TextView levelView = (TextView) findViewById(R.id.level_view);
-        TextView timeForLevelView = (TextView) findViewById(R.id.time_for_level_view);
-        TextView amountOfNumbersView = (TextView) findViewById(R.id.amount_of_numbers_view);
-        TextView pointsForCorrectView = (TextView) findViewById(R.id.points_for_correct_view);
-        TextView pointsNeededView = (TextView) findViewById(R.id.points_needed_view);
+        TextView levelView = findViewById(R.id.level_view);
+        TextView timeForLevelView = findViewById(R.id.time_for_level_view);
+        TextView amountOfNumbersView = findViewById(R.id.amount_of_numbers_view);
+        TextView pointsForCorrectView = findViewById(R.id.points_for_correct_view);
+        TextView pointsNeededView = findViewById(R.id.points_needed_view);
 
         levelView.setText(getString(R.string.level, String.valueOf(mGame.getmProgress())));
         timeForLevelView.setText(getString(R.string.time_for_level, getLevelTime()));
@@ -49,9 +55,12 @@ public class PreLevel extends AppCompatActivity {
         pointsNeededView.setText(getString(R.string.points_to_pass_level, String.valueOf(mLevel.getmNeededPoints())));
     }
 
-    // Counts down from 5 seconds before continuing to game
+    /**
+     * Sets up the countdown
+     * Counts down from 5 seconds before continuing to the game
+     */
     private void setCountdown() {
-        final TextView countdownView = (TextView) findViewById(R.id.countdown_view);
+        final TextView countdownView = findViewById(R.id.countdown_view);
 
         new CountDownTimer(5000, 1000) {
             public void onTick(long msLeft) {
@@ -67,7 +76,9 @@ public class PreLevel extends AppCompatActivity {
         }.start();
     }
 
-    // formats milliseconds left into mm:ss
+    /**
+     * Formats milliseconds left into mm:ss
+     */
     private String getLevelTime() {
         int msInLevel = mLevel.getmLevelTime();
         String minutes = String.valueOf(msInLevel / 60000);
@@ -79,7 +90,6 @@ public class PreLevel extends AppCompatActivity {
             seconds = "0" + seconds;
         }
 
-        String time = minutes + ":" + seconds;
-        return time;
+        return minutes + ":" + seconds;
     }
 }

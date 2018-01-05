@@ -16,12 +16,10 @@ public class HighScoreItemAdapter extends RecyclerView.Adapter<HighScoreViewHold
 
     private Context mContext;
     private List<Game> mGameArrayList;
-    private int mLastGameID;
 
-    public HighScoreItemAdapter(Context context, List<Game> list, int lastGameID) {
+    public HighScoreItemAdapter(Context context, List<Game> list) {
         this.mGameArrayList = list;
         this.mContext = context;
-        mLastGameID = lastGameID;
     }
 
     @Override
@@ -34,6 +32,7 @@ public class HighScoreItemAdapter extends RecyclerView.Adapter<HighScoreViewHold
     public void onBindViewHolder(final HighScoreViewHolder holder, final int position) {
         final Game game = mGameArrayList.get(position);
 
+        // show the score and name of the user
         holder.scoreView.setText(String.valueOf(game.getmPoints()));
         String name = game.getmName();
         if (name.isEmpty()) {
@@ -45,11 +44,6 @@ public class HighScoreItemAdapter extends RecyclerView.Adapter<HighScoreViewHold
         String dateTime = game.getmDate();
         String[] dateTimeArray = dateTime.split(" ");
         holder.dateView.setText(dateTimeArray[0] + "\n" + dateTimeArray[1]);
-
-        // highlights the just achieved score
-        if (game.getmID() == mLastGameID) {
-            holder.layout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccentLight));
-        }
     }
 
     @Override

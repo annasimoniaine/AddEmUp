@@ -36,18 +36,19 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-//            IdpResponse response = IdpResponse.fromResultIntent(data);
-
             if (resultCode == RESULT_OK) {
                 startMenu();
             } else {
-                // signin failed!
+                // sign in failed
                 Toast.makeText(this, getString(R.string.signed_in_cancelled), Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
     }
 
+    /**
+     * Sets up signing in with Email or Google through firebase
+     */
     private void firebaseSignIn() {
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
@@ -65,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
         );
     }
 
+    /**
+     * Starts the menu activity
+     */
     private void startMenu() {
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);

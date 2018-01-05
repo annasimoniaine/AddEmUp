@@ -54,7 +54,6 @@ public class GameActivity extends AppCompatActivity {
 
     private int mPointsLevel;
 
-    // The following are used for the shake detection
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
@@ -78,22 +77,25 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        // Add the following line to register the Session Manager Listener onResume
+        // Registers the Session Manager Listener
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     public void onPause() {
-        // Add the following line to unregister the Sensor Manager onPause
+        // Unregisters the Sensor Manager Listener
         mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
     }
 
-    // blocks the back button
     @Override
     public void onBackPressed() {
+        // blocks the back button
     }
 
+    /**
+     * Sets the view variables to the layout elements
+     */
     private void setViews() {
         mLevelView = findViewById(R.id.level_view);
         mPointsView = findViewById(R.id.points_view);
@@ -113,20 +115,27 @@ public class GameActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Sets the variables for this level
+     */
     private void setLevelVariables() {
         mPointsLevel = 0;
         mLevel = new Level(mGame.getmProgress());
     }
 
-    // sets a new goal and updates the views, called when answer is submitted
+    /**
+     * Sets a new goal and updates the views, called when answer is submitted
+     */
     private void setGoal() {
         setGameVariables();
         fillViews();
     }
 
-    // chooses 6 random numbers in the mLevel's range
-    // makes the goal by adding some of the numbers
-    // shuffles the array
+    /**
+     * Chooses 6 random numbers in the mLevel's range
+     * Makes the goal by adding some of the numbers
+     * Shuffles the array
+     */
     private void setGameVariables() {
         int numberOfNumbers = 6;
         for (ToggleButton btn : mNumberButtons) {
@@ -148,6 +157,11 @@ public class GameActivity extends AppCompatActivity {
         shuffleArray(mNumbers);
     }
 
+    /**
+     * Shuffles the array and refills numbers in the button views
+     * Shows the animation of changing the color to notify the shuffle
+     * Called on shake
+     */
     private void shuffleNumberViews() {
         for (ToggleButton btn : mNumberButtons) {
             final ToggleButton BTN = btn;
@@ -174,6 +188,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Fills the text views and the buttons
+     */
     private void fillViews() {
         int i = 0;
         for (ToggleButton btn : mNumberButtons) {
@@ -187,6 +204,10 @@ public class GameActivity extends AppCompatActivity {
         mLevelView.setText(getString(R.string.level, String.valueOf(mGame.getmProgress())));
     }
 
+    /**
+     * Sets the onclick listeners for the buttons and the submit button
+     * Also starts out the submit button as disabled
+     */
     private void setOnClicks() {
         for (ToggleButton btn : mNumberButtons) {
             onToggleNumber(btn);
@@ -202,8 +223,10 @@ public class GameActivity extends AppCompatActivity {
         disableSubmitButton();
     }
 
+    /**
+     * Sets up the onshake listener
+     */
     private void setOnShake() {
-        // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
@@ -216,22 +239,24 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    // checks if the answer is correct, shows feedback, gives points, sets new goal
+    /**
+     * Checks if the answer is correct, shows feedback, gives points, sets new goal
+     */
     private void submitAnswer() {
         if (mGoalNumber != mCurrentSum) {
             mRightWrongImage.setImageResource(R.drawable.cross);
-            showAnimation();
-            setGoal();
         } else {
             mRightWrongImage.setImageResource(R.drawable.check);
-            showAnimation();
             mPointsLevel += mLevel.getmPointsForCorrect();
-            setGoal();
         }
+        showAnimation();
+        setGoal();
     }
 
-    // shows check/cross image, moves it to the upper right corner, hides it, replaces it
-    // animated using a ViewPropertyAnimator
+    /**
+     * Shows check/cross image, moves it to the upper right corner, hides it, replaces it
+     * Animated using a ViewPropertyAnimator
+     */
     private void showAnimation() {
         final float defaultY = mRightWrongImage.getY();
         final float defaultX = mRightWrongImage.getX();
@@ -248,7 +273,11 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    // keeps track of how many buttons are clicked on and what their sum is and highlights them
+    /**
+     * Sets on checked change listener for button
+     * Keeps track of how many buttons are clicked on and what their sum is and highlights them
+     * @param btn: the ToggleButton that the listener is attached to
+     */
     private void onToggleNumber(ToggleButton btn) {
         btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -286,9 +315,11 @@ public class GameActivity extends AppCompatActivity {
         mSubmitBtn.setEnabled(false);
     }
 
-    // sets countdown for the length of the mLevel
-    // shows the timer counting down in mm:ss format
-    // checks if user got enough points and ends mLevel when countdown is done
+    /**
+     * Sets countdown for the length of the mLevel
+     * Shows the timer counting down in mm:ss format
+     * Checks if user got enough points and ends mLevel when countdown is done
+     */
     private void setCountdown() {
         new CountDownTimer(mLevel.getmLevelTime(), 1000) {
             public void onTick(long msLeft) {
@@ -314,10 +345,12 @@ public class GameActivity extends AppCompatActivity {
         }.start();
     }
 
-    // called when not enough points at end of mLevel
-    // sets the game as a new highscore in firebase
-    // also cleares the saved game from the sqlite db
-    // starts the GameOver activity
+    /**
+     * Called when not enough points at end of mLevel
+     * Saves the game as a new highscore in firebase
+     * Also clears the saved game from the sqlite db
+     * Starts the GameOver activity
+     */
     private void failLevel() {
         mGame.setCurrentDate();
         saveHighscore();
@@ -333,9 +366,11 @@ public class GameActivity extends AppCompatActivity {
         finish();
     }
 
-    // call when enough points to pass the mLevel
-    // ups the progress by one mLevel
-    // starts the EndOfLevel activity
+    /**
+     * Called when enough points to pass the mLevel
+     * Ups the progress by one mLevel
+     * Starts the EndOfLevel activity
+     */
     private void passLevel() {
         mGame.setmPoints(mGame.getmPoints() + mPointsLevel);
         mGame.setmProgress(mGame.getmProgress() + 1);
@@ -346,7 +381,9 @@ public class GameActivity extends AppCompatActivity {
         finish();
     }
 
-    // saves the game as a high score in firebase
+    /**
+     * Saves the game as a high score in firebase
+     */
     private void saveHighscore() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference("game");

@@ -97,7 +97,9 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
-    // called when the camera is used to take a new account picture in editImage
+    /**
+     * Called when the camera is used to take a new account picture in editImage
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -105,6 +107,9 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets up the toolbar as ActionBar with up button and title
+     */
     public void setToolbar() {
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -117,6 +122,9 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets the currently logged in user from firebase Auth
+     */
     private void getUser() {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mUser != null) {
@@ -128,6 +136,9 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets the layout/view variables
+     */
     private void setVariables() {
         mEditNameLayout = findViewById(R.id.name_edit_layout);
         mNameLayout = findViewById(R.id.name_layout);
@@ -135,6 +146,9 @@ public class AccountActivity extends AppCompatActivity {
         mNameEdit = findViewById(R.id.name_edit);
     }
 
+    /**
+     * Fills the text views and initialises setting the image & stats
+     */
     private void fillViews() {
         mNameView.setText(mName);
 
@@ -145,6 +159,12 @@ public class AccountActivity extends AppCompatActivity {
         getStats();
     }
 
+    /**
+     * Fills the TextViews with statistics about the user's played games
+     * @param amountOfGames: total amount of games user has played
+     * @param highestScore: highest score user has achieved
+     * @param highestLevel: highest level user has reached
+     */
     private void fillStats(int amountOfGames, int highestScore, int highestLevel) {
         TextView highestScoreView = findViewById(R.id.highest_score);
         TextView gamesPlayedView = findViewById(R.id.amount_of_games);
@@ -155,6 +175,10 @@ public class AccountActivity extends AppCompatActivity {
         highestLevelView.setText(getString(R.string.highest_level, highestLevel));
     }
 
+    /**
+     * Binds profile picture to the ImageView with Picasso
+     * Called on create & when setting new image with camera
+     */
     private void bindImage() {
         ImageView imageView = findViewById(R.id.user_img);
         Picasso.with(this)
@@ -164,6 +188,9 @@ public class AccountActivity extends AppCompatActivity {
                 .into(imageView);
     }
 
+    /**
+     * Sets the onclicks for the buttons
+     */
     private void setOnClicks() {
         ImageButton editNameButton = findViewById(R.id.edit_name_button);
         editNameButton.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +213,9 @@ public class AccountActivity extends AppCompatActivity {
         setEditImage();
     }
 
+    /**
+     * Saves the changed name to firebase Auth
+     */
     private void saveName() {
         final String NEW_NAME = mNameEdit.getText().toString();
 
@@ -207,6 +237,9 @@ public class AccountActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Sets up the onclick listener for adding a new image with camera (if device has camera)
+     */
     private void setEditImage() {
         // check whether the device has a camera function
         ImageView editImage = findViewById(R.id.edit_image);
@@ -223,19 +256,20 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates file where new picture should go and starts intent to take picture
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
                 Toast.makeText(this, "IOException", Toast.LENGTH_LONG).show();
             }
-            // Continue only if the File was successfully created
+
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.simonebakker.simone.addemup.fileprovider",
@@ -246,8 +280,10 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates a temporary image file in with a unique name
+     */
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -257,11 +293,14 @@ public class AccountActivity extends AppCompatActivity {
                 storageDir      /* directory */
         );
 
-        // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
+    /**
+     * Adds the image to the device's picture gallery
+     * and passes the path when calling saveAccountImage
+     */
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(mCurrentPhotoPath);
@@ -272,6 +311,10 @@ public class AccountActivity extends AppCompatActivity {
         saveAccountImage(contentUri);
     }
 
+    /**
+     * Saves image to the current user's profile in firebase Auth
+     * @param newUrl: the Uri of the image to save
+     */
     private void saveAccountImage(Uri newUrl) {
         final Uri NEW_URL = newUrl;
 
@@ -291,6 +334,9 @@ public class AccountActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Gets the user's game statistics from firebase
+     */
     private void getStats() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
@@ -323,6 +369,9 @@ public class AccountActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Starts the Login activity
+     */
     private void backToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

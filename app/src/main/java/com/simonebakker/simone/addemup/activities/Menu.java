@@ -25,7 +25,7 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         getSavedGame();
-        setViews();
+        setButtonVariables();
         setOnClicks();
         setResumeButton();
     }
@@ -37,13 +37,17 @@ public class Menu extends AppCompatActivity {
         setResumeButton();
     }
 
-    // gets the currently saved game from the db
+    /**
+     * Gets the currently saved game from the (sqlite) db
+     */
     private void getSavedGame() {
         DataSource dataSource = new DataSource(Menu.this);
         mResumeGame = dataSource.getCurrentGame();
     }
 
-    // sets resume game button depending on if there's a currently saved game
+    /**
+     * Sets resume game button depending on whether there's a currently saved game
+     */
     private void setResumeButton() {
         if (mResumeGame.getmProgress() == -1) {
             mResumeGameButton.setText(getString(R.string.no_resume_game));
@@ -54,13 +58,19 @@ public class Menu extends AppCompatActivity {
         }
     }
 
-    private void setViews() {
+    /**
+     * Sets the variables for the buttons
+     */
+    private void setButtonVariables() {
         mNewGameButton = findViewById(R.id.new_game_btn);
         mResumeGameButton = findViewById(R.id.resume_game_btn);
         mHighscoresButton = findViewById(R.id.highscores_btn);
         mAccountButton = findViewById(R.id.account_button);
     }
 
+    /**
+     * Sets the onclicks for the buttons
+     */
     private void setOnClicks() {
         mNewGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +103,9 @@ public class Menu extends AppCompatActivity {
         });
     }
 
+    /**
+     * Starts a new game
+     */
     private void newGame() {
         Game newGame = new Game(-1, 0, 1);
         Intent intent = new Intent(Menu.this, PreLevel.class);
@@ -100,6 +113,9 @@ public class Menu extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Starts the currently saved game
+     */
     private void resumeGame() {
         Intent intent = new Intent(Menu.this, PreLevel.class);
         intent.putExtra("game", mResumeGame);

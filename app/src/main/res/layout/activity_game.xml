@@ -11,37 +11,35 @@
         android:id="@+id/level_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Level 1"
+        tools:text="Level 1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/points_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="Points: 0"
+        tools:text="Points: 0"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/time_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time left: 0:45"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/points_view"
-        android:layout_marginRight="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/level_view"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginTop="8dp"
+        tools:text="Time left: 0:45"
+        app:layout_constraintLeft_toRightOf="@+id/level_view"
+        app:layout_constraintRight_toLeftOf="@+id/points_view"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/goal_view"
@@ -52,7 +50,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="83"
+        tools:text="83"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:textSize="36sp"
         android:textStyle="bold"
@@ -64,15 +62,15 @@
         android:id="@+id/explanation_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Choose the 3 numbers that add up to 83!"
+        tools:text="Choose the 3 numbers that add up to 83!"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_view"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/goal_view" />
 
     <Button
         android:id="@+id/submit_btn"
@@ -94,17 +92,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/submit_btn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/explanation_view"
-        app:layout_constraintVertical_bias="0.501"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        app:layout_constraintVertical_bias="0.501">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -115,42 +113,42 @@
                 android:layout_width="88dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="32dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="32dp"
                 android:background="@color/colorPrimary"
-                android:text="8"
+                tools:text="8"
                 android:textOff="@null"
                 android:textOn="@null"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/number_5"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="8dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ToggleButton
                 android:id="@+id/number_2"
                 android:layout_width="88dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="32dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:background="@color/colorPrimary"
-                android:text="8"
+                tools:text="8"
                 android:textOff="@null"
                 android:textOn="@null"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginStart="8dp" />
+                app:layout_constraintLeft_toLeftOf="parent" />
 
             <ToggleButton
                 android:id="@+id/number_3"
                 android:layout_width="88dp"
                 android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
                 android:background="@color/colorPrimary"
-                android:text="8"
+                tools:text="8"
                 android:textOff="@null"
                 android:textOn="@null"
                 android:textSize="24sp"
@@ -158,61 +156,57 @@
                 app:layout_constraintLeft_toRightOf="@+id/number_6"
                 app:layout_constraintRight_toLeftOf="@+id/number_1"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <ToggleButton
                 android:id="@+id/number_4"
                 android:layout_width="88dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="32dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
                 android:background="@color/colorPrimary"
-                android:text="8"
+                tools:text="8"
                 android:textOff="@null"
                 android:textOn="@null"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintLeft_toRightOf="@+id/number_2"
-                app:layout_constraintRight_toLeftOf="@+id/number_5"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp" />
+                app:layout_constraintRight_toLeftOf="@+id/number_5" />
 
             <ToggleButton
                 android:id="@+id/number_5"
                 android:layout_width="88dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="32dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimary"
-                android:text="8"
+                tools:text="8"
                 android:textOff="@null"
                 android:textOn="@null"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginEnd="8dp" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <ToggleButton
                 android:id="@+id/number_6"
                 android:layout_width="88dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="32dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
                 android:background="@color/colorPrimary"
-                android:text="8"
+                tools:text="8"
                 android:textOff="@null"
                 android:textOn="@null"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/number_2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                android:layout_marginStart="8dp" />
+                app:layout_constraintVertical_bias="1.0" />
         </android.support.constraint.ConstraintLayout>
 
     </FrameLayout>

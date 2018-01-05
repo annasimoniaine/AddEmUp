@@ -13,6 +13,9 @@ import com.simonebakker.simone.addemup.R;
 import com.simonebakker.simone.addemup.database.DataSource;
 import com.simonebakker.simone.addemup.models.Game;
 
+/**
+ * Activity that's shown when a level is failed to show the result
+ */
 public class GameOver extends AppCompatActivity {
 
     private Button mMenuBtn;
@@ -47,11 +50,14 @@ public class GameOver extends AppCompatActivity {
         }, 1000);
     }
 
-    // blocks the back button
     @Override
     public void onBackPressed() {
+        // blocks the back button
     }
 
+    /**
+     * Sets the Text and Button views
+     */
     private void setViews() {
         TextView passedLevelText = findViewById(R.id.failed_level);
         TextView totalPointsText = findViewById(R.id.total_points);
@@ -64,6 +70,9 @@ public class GameOver extends AppCompatActivity {
         totalPointsText.setText(String.valueOf(mGame.getmPoints()));
     }
 
+    /**
+     * Sets the onclicks for the buttons
+     */
     private void setOnClicks() {
         mMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +91,11 @@ public class GameOver extends AppCompatActivity {
         });
     }
 
+    /**
+     * Starts the HighScores activity
+     */
     private void goToHighScores() {
         Intent intent = new Intent(GameOver.this, HighScores.class);
-        intent.putExtra("lastGameID", mGame.getmID());
         startActivity(intent);
         finish();
     }

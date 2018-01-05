@@ -10,7 +10,6 @@ public class DBHelper extends SQLiteOpenHelper {
     // version number.
     private static final String DATABASE_NAME = "game.db";
     private static final int DATABASE_VERSION = 2;
-    private final Context context;
     // Creating the table
     private static final String DATABASE_CREATE =
             "CREATE TABLE " + GameContract.GameEntry.TABLE_NAME +
@@ -23,7 +22,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     @Override

@@ -64,7 +64,9 @@ public class Game implements Serializable {
         this.mDate = mDate;
     }
 
-    // gets the current date and formats it to day/month/year hh:mm:ss
+    /**
+     * Gets the current date and formats it to day/month/year hh:mm:ss
+     */
     public void setCurrentDate() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = Calendar.getInstance().getTime();

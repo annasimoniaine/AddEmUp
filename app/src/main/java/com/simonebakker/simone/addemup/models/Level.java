@@ -12,7 +12,10 @@ public class Level {
         setVariables(numberLevel);
     }
 
-    // sets all the level specific variables depending on which level
+    /**
+     * Sets all the level specific variables depending on which level
+     * @param numberLevel: the level, determines all the values
+     */
     private void setVariables(int numberLevel) {
         switch (numberLevel) {
             case 1:
@@ -96,6 +99,15 @@ public class Level {
         }
     }
 
+    /**
+     * Sets all the variables
+     * @param amountOfNumbers: the amount of numbers that need to be added up to make the goal
+     * @param minRange: the lower boundary for the numbers
+     * @param maxRange: the higher boundary for the numbers
+     * @param pointsForCorrect: the amount of points the user gets for a good answer
+     * @param levelTime: the time the level lasts (in seconds)
+     * @param neededPoints: the points the user needs to pass the level
+     */
     private void setValues(int amountOfNumbers, int minRange, int maxRange, int pointsForCorrect, int levelTime, int neededPoints) {
         mAmountOfNumbers = amountOfNumbers;
         mMinRange = minRange;

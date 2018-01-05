@@ -12,13 +12,16 @@ import java.util.List;
 
 public class DataSource {
     private final DBHelper dbHelper;
+
     public DataSource(Context context) {
         dbHelper = new DBHelper(context);
     }
 
-    // Create
+    /**
+     * Saves a game to the db, making it the current saved game
+     * @param game: the game to save
+     */
     public void saveGame(Game game) {
-        // Open connection to write data
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -27,10 +30,12 @@ public class DataSource {
         values.put(GameContract.GameEntry.COLUMN_NAME_PROGRESS, game.getmProgress());
         values.put(GameContract.GameEntry.COLUMN_NAME_DATE, game.getmDate());
         db.insert(GameContract.GameEntry.TABLE_NAME, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
 
-    // Select (for resume, gets the non-finished game and returns it as a game object)
+    /**
+     * Gets the currently saved game
+     */
     public Game getCurrentGame() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selectQuery = "SELECT  " +
@@ -38,8 +43,7 @@ public class DataSource {
                 GameContract.GameEntry.COLUMN_NAME_POINTS + ',' +
                 GameContract.GameEntry.COLUMN_NAME_PROGRESS + ',' +
                 GameContract.GameEntry.COLUMN_NAME_DATE  +
-                " FROM " + GameContract.GameEntry.TABLE_NAME +
-                " WHERE " + GameContract.GameEntry.COLUMN_NAME_PROGRESS + " != -1";
+                " FROM " + GameContract.GameEntry.TABLE_NAME ;
 
         Game game = new Game(-1, 0, -1);
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -56,7 +60,10 @@ public class DataSource {
         return game;
     }
 
-    // Delete (removes all unfinished games, used before new currently saved game is added)
+    /**
+     * Removes all games from the db
+     * Used before new currently saved game is added
+     */
     public void removePrevious() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(GameContract.GameEntry.TABLE_NAME, null, null);

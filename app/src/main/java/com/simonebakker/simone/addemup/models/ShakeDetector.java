@@ -9,18 +9,16 @@ public class ShakeDetector implements SensorEventListener {
 
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
     private static final int SHAKE_SLOP_TIME_MS = 500;
-//    private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
 
     private OnShakeListener mListener;
     private long mShakeTimestamp;
-//    private int mShakeCount;
 
     public void setOnShakeListener(OnShakeListener listener) {
         this.mListener = listener;
     }
 
     public interface OnShakeListener {
-        public void onShake();
+        void onShake();
     }
 
     @Override
@@ -45,19 +43,13 @@ public class ShakeDetector implements SensorEventListener {
 
             if (gForce > SHAKE_THRESHOLD_GRAVITY) {
                 final long now = System.currentTimeMillis();
+
                 // ignore shake events too close to each other (500ms)
                 if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now) {
                     return;
                 }
 
-//                // reset the shake count after 3 seconds of no shakes
-//                if (mShakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
-//                    mShakeCount = 0;
-//                }
-
                 mShakeTimestamp = now;
-//                mShakeCount++;
-
                 mListener.onShake();
             }
         }

@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Activity that's shown after a level is passed to show the results
+ */
 public class EndOfLevel extends AppCompatActivity {
 
     private Button mQuitBtn, mNextBtn, mQuitNoSaveBtn;
@@ -47,18 +50,21 @@ public class EndOfLevel extends AppCompatActivity {
 
     }
 
-    // blocks the back button
     @Override
     public void onBackPressed() {
+        // blocks the back button
     }
 
+    /**
+     * Sets the Text and Button views
+     */
     private void setViews() {
-        TextView mPassedLevelText = (TextView) findViewById(R.id.passed_level);
-        TextView mTotalPointsText = (TextView) findViewById(R.id.total_points);
-        TextView mLevelPointsText = (TextView) findViewById(R.id.level_points);
-        mQuitBtn = (Button) findViewById(R.id.quit_btn);
-        mNextBtn = (Button) findViewById(R.id.next_btn);
-        mQuitNoSaveBtn = (Button) findViewById(R.id.quit_no_save_btn);
+        TextView mPassedLevelText = findViewById(R.id.passed_level);
+        TextView mTotalPointsText = findViewById(R.id.total_points);
+        TextView mLevelPointsText = findViewById(R.id.level_points);
+        mQuitBtn = findViewById(R.id.quit_btn);
+        mNextBtn = findViewById(R.id.next_btn);
+        mQuitNoSaveBtn = findViewById(R.id.quit_no_save_btn);
 
         mPassedLevelText.setText(getString(R.string.passed_level, String.valueOf(mGame.getmProgress() - 1)));
         mLevelPointsText.setText(getString(R.string.level_points, String.valueOf(mLevelPoints)));
@@ -67,6 +73,9 @@ public class EndOfLevel extends AppCompatActivity {
         mNextBtn.setText(getString(R.string.next_level, String.valueOf(mGame.getmProgress())));
     }
 
+    /**
+     * Sets the onclicks for the buttons
+     */
     private void setOnClicks() {
         mQuitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +103,9 @@ public class EndOfLevel extends AppCompatActivity {
         });
     }
 
+    /**
+     * Saves the game to the (sqlite) db as the currently saved game
+     */
     private void saveGame() {
         // Set the game's date to now
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -107,6 +119,9 @@ public class EndOfLevel extends AppCompatActivity {
         dataSource.saveGame(mGame);
     }
 
+    /**
+     * Starts the menu activity
+     */
     private void toMenu() {
         Intent intent = new Intent(EndOfLevel.this, Menu.class);
         startActivity(intent);

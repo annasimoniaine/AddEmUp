@@ -1,6 +1,5 @@
 package com.simonebakker.simone.addemup.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,8 +24,6 @@ import java.util.List;
 public class HighScores extends AppCompatActivity {
 
     private List<Game> mGameList;
-    private RecyclerView mHighScoresRecyclerView;
-    private HighScoreItemAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +34,9 @@ public class HighScores extends AppCompatActivity {
         getHighscores();
     }
 
+    /**
+     * Sets up the toolbar as ActionBar with up button and title
+     */
     public void setToolbar() {
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -47,21 +47,22 @@ public class HighScores extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets up the RecyclerView for the list of highscores
+     */
     private void setRecyclerView() {
-        mHighScoresRecyclerView = findViewById(R.id.recyclerView);
+        RecyclerView mHighScoresRecyclerView = findViewById(R.id.recyclerView);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mHighScoresRecyclerView.setLayoutManager(mLayoutManager);
 
-        Intent intent = getIntent();
-
-        // lastGameID is used to highlight the high score that was just achieved
-        int lastGameID = intent.getIntExtra("lastGameID", -1);
-
-        mAdapter = new HighScoreItemAdapter(this, mGameList, lastGameID);
+        HighScoreItemAdapter mAdapter = new HighScoreItemAdapter(this, mGameList);
         mHighScoresRecyclerView.setAdapter(mAdapter);
     }
 
+    /**
+     * Gets the list of highscores/games from firebase
+     */
     private void getHighscores() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
