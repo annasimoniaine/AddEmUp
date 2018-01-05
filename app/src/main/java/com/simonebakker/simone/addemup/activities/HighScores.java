@@ -87,7 +87,7 @@ public class HighScores extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w("Errorrr", "loadPost:onCancelled", databaseError.toException());
+                Log.w("Error", "loadPost:onCancelled", databaseError.toException());
             }
         });
     }

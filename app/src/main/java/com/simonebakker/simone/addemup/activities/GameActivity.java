@@ -2,7 +2,10 @@ package com.simonebakker.simone.addemup.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +24,7 @@ import com.simonebakker.simone.addemup.R;
 import com.simonebakker.simone.addemup.database.DataSource;
 import com.simonebakker.simone.addemup.models.Game;
 import com.simonebakker.simone.addemup.models.Level;
+import com.simonebakker.simone.addemup.models.ShakeDetector;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -50,6 +54,11 @@ public class GameActivity extends AppCompatActivity {
 
     private int mPointsLevel;
 
+    // The following are used for the shake detection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +72,21 @@ public class GameActivity extends AppCompatActivity {
         setGoal();
         setOnClicks();
         setCountdown();
+        setOnShake();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     // blocks the back button
@@ -124,13 +148,12 @@ public class GameActivity extends AppCompatActivity {
         shuffleArray(mNumbers);
     }
 
-    private void shuffleArray(int[] array) {
-        Random random = new Random();
-        for (int i = array.length - 1; i > 0; i--) {
-            int index = random.nextInt(i + 1);
-            int temp = array[index];
-            array[index] = array[i];
-            array[i] = temp;
+    private void shuffleNumberViews() {
+        shuffleArray(mNumbers);
+        int i = 0;
+        for (ToggleButton btn : mNumberButtons) {
+            btn.setText(String.valueOf(mNumbers[i]));
+            i++;
         }
     }
 
@@ -160,6 +183,20 @@ public class GameActivity extends AppCompatActivity {
         });
 
         disableSubmitButton();
+    }
+
+    private void setOnShake() {
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                shuffleNumberViews();
+            }
+        });
     }
 
     // checks if the answer is correct, shows feedback, gives points, sets new goal
@@ -305,5 +342,15 @@ public class GameActivity extends AppCompatActivity {
         valuesToPut.put("date", mGame.getmDate());
 
         databaseReference.push().setValue(valuesToPut);
+    }
+
+    private void shuffleArray(int[] array) {
+        Random random = new Random();
+        for (int i = array.length - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            int temp = array[index];
+            array[index] = array[i];
+            array[i] = temp;
+        }
     }
 }
