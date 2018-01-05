@@ -1,14 +1,13 @@
 package com.simonebakker.simone.addemup.activities;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,11 +32,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.simonebakker.simone.addemup.Manifest;
 import com.simonebakker.simone.addemup.R;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -53,7 +54,8 @@ public class AccountActivity extends AppCompatActivity {
     private LinearLayout mNameLayout;
     private TextView mNameView;
     private EditText mNameEdit;
-    private ImageView mImageView;
+
+    private String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +101,7 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            mImageView.setImageBitmap(imageBitmap);
-
-            saveAccountImage(imageBitmap);
+            galleryAddPic();
         }
     }
 
@@ -158,13 +156,12 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void bindImage() {
-        mImageView = findViewById(R.id.user_img);
+        ImageView imageView = findViewById(R.id.user_img);
         Picasso.with(this)
                 .load(mPhotoUrl).placeholder(R.drawable.default_avatar).error(R.drawable.default_avatar)
                 .fit()
                 .centerInside()
-                .into(mImageView);
-        mImageView.setImageURI(mPhotoUrl);
+                .into(imageView);
     }
 
     private void setOnClicks() {
@@ -218,7 +215,7 @@ public class AccountActivity extends AppCompatActivity {
             editImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    takePicture();
+                    dispatchTakePictureIntent();
                 }
             });
         } else {
@@ -226,16 +223,57 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
-    private void takePicture() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Toast.makeText(this, "IOException", Toast.LENGTH_LONG).show();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.simonebakker.simone.addemup.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
         }
     }
 
-    private void saveAccountImage(Bitmap imageBitmap) {
-        final Uri NEW_URL = convertBitmapToUrl(imageBitmap);
-//        final Uri NEW_URL = Uri.parse("http://cimg.tvgcdn.net/i/2017/07/19/8da32aef-513d-46c7-9497-8bf58e18b22e/9d69eb37ae4443d6915957ee46e565fe/170718-sarah-hyland-shadowhunters.png");
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+
+        saveAccountImage(contentUri);
+    }
+
+    private void saveAccountImage(Uri newUrl) {
+        final Uri NEW_URL = newUrl;
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(NEW_URL)
@@ -251,20 +289,6 @@ public class AccountActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-    }
-
-    private Uri convertBitmapToUrl(Bitmap imageBitmap) {
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        ContentResolver contentResolver = this.getContentResolver();
-        String path = MediaStore.Images.Media.insertImage(contentResolver, imageBitmap, "Title", null);
-        if (path == null) {
-            Toast.makeText(this, "image failed to be stored", Toast.LENGTH_LONG).show();
-            return Uri.parse("http://images-production.global.ssl.fastly.net/uploads/posts/off_site_promo_image/127357/sarah-hyland-plastic-surgery.jpg");
-        } else {
-            return Uri.parse(path);
-        }
     }
 
     private void getStats() {
